@@ -1,0 +1,50 @@
+
+CREATE TABLE T_CATEGORIZEDFIELD 
+   (	ID BIGINT(20) NOT NULL AUTO_INCREMENT, 
+	C_VERSION INT, 
+	C_ACTIVE BIT(1), 
+	C_MANUALID VARCHAR(255), 
+	C_CLASSNAME VARCHAR(255), 
+	C_FIELDNAME VARCHAR(255), 
+	C_ENABLE BIT(1), 
+	C_CATEGORY BIGINT(20), 
+	 PRIMARY KEY (ID)
+);
+create index CATEGORIZEDFIELD_CATEGORY on T_CATEGORIZEDFIELD (C_CATEGORY);
+
+##########################################################################################
+
+CREATE TABLE T_CATEGORY 
+   (	ID BIGINT(20) NOT NULL AUTO_INCREMENT,
+	C_VERSION INT, 
+	C_ACTIVE BIT(1), 
+	C_MANUALID VARCHAR(255), 
+	C_NAME VARCHAR(255) unique, 
+	C_ENABLE BIT(1), 
+	 PRIMARY KEY (ID)
+);
+
+##########################################################################################
+
+CREATE TABLE T_CATEGORYELEMENT 
+   (	ID BIGINT(20) NOT NULL AUTO_INCREMENT,
+	C_VERSION INT, 
+	C_ACTIVE BIT(1), 
+	C_VALUE VARCHAR(2024), 
+	C_MANUALID VARCHAR(255), 
+	C_ENABLE BIT(1), 
+	C_CATEGORY BIGINT(20), 
+	I_CATEGORY INT, 
+	 PRIMARY KEY (ID)
+);
+
+create index CATEGORYELEMENT_CATEGORY on T_CATEGORYELEMENT (C_CATEGORY);
+
+--##########################################################################################
+
+CREATE TABLE T_CONSTANTCATEGORYELEMENT 
+   (	ID BIGINT(20) NOT NULL AUTO_INCREMENT,
+        C_CODE VARCHAR(255), 
+        UNIQUE (C_CODE),
+        PRIMARY KEY (ID)
+);
