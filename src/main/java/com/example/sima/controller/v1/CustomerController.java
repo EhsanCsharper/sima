@@ -4,6 +4,7 @@ import com.example.sima.DTO.request.SimaCustomerRequestDTO;
 import com.example.sima.api.v1.model.GeneralDTO;
 import com.example.sima.exception.SimaBusinessException;
 import com.example.sima.exception.SimaResponseCodes;
+import com.example.sima.feature.SimaFeature;
 import com.example.sima.service.SimaCustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Properties;
 
 @RestController
 @RequestMapping(CustomerController.BASE_URL)
@@ -30,6 +33,7 @@ public class CustomerController {
         SimaCustomerRequestDTO requestDTO = new SimaCustomerRequestDTO();
         requestDTO.setIdentifier(identifier);
         requestDTO.setIdentifierTypeCode(identifierTypeCode);
+        logger.info("IS_SIMA_ACTIVE feature : " + SimaFeature.IS_SIMA_ACTIVE);
         simaCustomerService.sendIsPartyBlockedRequest(requestDTO);
         return new GeneralDTO(SimaResponseCodes.SIMA_SUCCESS.getCode(), "درخواست شما با موفقیت ارسال شد", BASE_URL + "/getCustomerInfo/" + requestDTO.getIdentifierTypeCode() + "/" + requestDTO.getIdentifier());
     }
