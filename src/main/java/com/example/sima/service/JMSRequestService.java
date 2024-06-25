@@ -10,4 +10,6 @@ public interface JMSRequestService {
     JMSRequest persistJMSRequest(String messageContent, String sequenceCode, String messageId, String correlationId) throws SimaBusinessException;
 
     JMSRequest persistJMSRequest(String messageContent, String sequenceCode, String messageId) throws SimaBusinessException;
+
+    JMSRequest createJmsRequest(String messageContent, String sequenceCode, String messageId, String correlationId, String key) throws SimaBusinessException;
 }

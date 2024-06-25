@@ -1,6 +1,7 @@
 package com.example.sima.service;
 
 import com.example.sima.SimaCodes;
+import com.example.sima.config.log.CorrelationIDHelper;
 import com.example.sima.domain.ConstantCategoryElement;
 import com.example.sima.domain.JMSRequest;
 import com.example.sima.exception.SimaBusinessException;
@@ -20,9 +21,12 @@ public class JMSRequestServiceImpl implements JMSRequestService{
 
     private final JMSRequestRepository jmsRequestRepository;
 
-    public JMSRequestServiceImpl(CategoryService categoryService, JMSRequestRepository jmsRequestRepository) {
+    private final CorrelationIDHelper correlationIDHelper;
+
+    public JMSRequestServiceImpl(CategoryService categoryService, JMSRequestRepository jmsRequestRepository, CorrelationIDHelper correlationIDHelper) {
         this.categoryService = categoryService;
         this.jmsRequestRepository = jmsRequestRepository;
+        this.correlationIDHelper = correlationIDHelper;
     }
 
     @Override
@@ -39,6 +43,22 @@ public class JMSRequestServiceImpl implements JMSRequestService{
         jmsRequest.setStatus(status);
         jmsRequest.setMessageBody(messageContent);
         jmsRequestRepository.save(jmsRequest);
+        return jmsRequest;
+    }
+
+    @Override
+    public JMSRequest createJmsRequest(String messageContent, String sequenceCode, String messageId, String correlationId, String key) throws SimaBusinessException {
+        JMSRequest jmsRequest = new JMSRequest();
+        String dateTime = DateUtil.getCurrentDateTimeString();
+        ConstantCategoryElement status = categoryService.getCategoryElement(SimaCodes.MQ_REQUEST_NOT_PROCEED);
+        logger.info("correlationId  : " + correlationId);
+        jmsRequest.setMessageId(messageId);
+        jmsRequest.setCorrelationId(correlationId);
+        jmsRequest.setSequenceCode(sequenceCode);
+        jmsRequest.setDateTime(dateTime);
+        jmsRequest.setKey(key);
+        jmsRequest.setStatus(status);
+        jmsRequest.setMessageBody(messageContent);
         return jmsRequest;
     }
 

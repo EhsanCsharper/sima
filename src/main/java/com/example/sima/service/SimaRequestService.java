@@ -9,4 +9,6 @@ public interface SimaRequestService {
     SimaRequest createSimaRequest(ConstantCategoryElement requestType);
 
     void persistSimaRequest(SimaRequest simaRequest, AbstractRequestType abstractRequestType) throws SimaBusinessException;
+
+    SimaRequest loadSimaRequestByMessageId(String correlationId);
 }

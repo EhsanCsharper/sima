@@ -33,13 +33,13 @@ public class UserContextInterceptor implements HandlerInterceptor {
                 .setLastname("admin")
                 .build();
         UserContextHolder.setCurrentUserContext(userContext);
-        logger.info(UserContextHolder.getCurrentUserContext().toString() + "\r\n" + "set.");
+        logger.debug(UserContextHolder.getCurrentUserContext().toString() + "\r\n" + "set.");
         return true;
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        logger.info(UserContextHolder.getCurrentUserContext().toString() + "\r\n" + "removed.");
+        logger.debug(UserContextHolder.getCurrentUserContext().toString() + "\r\n" + "removed.");
         UserContextHolder.clear();
     }
 }

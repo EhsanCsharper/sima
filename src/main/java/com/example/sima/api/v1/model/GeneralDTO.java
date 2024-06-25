@@ -7,13 +7,14 @@ import java.io.Serializable;
 public class GeneralDTO implements Serializable {
     protected static final Logger logger = LoggerFactory.getLogger(GeneralDTO.class);
     private String rsCode = "-1";
-    private String transactionCode = "-1";
+    // private String transactionCode = "-1";
     private String errorMessage = "";
     private Long responseTimeMillis = Long.valueOf("0");
     private String requestId = "";
     private String requestDateTime;
     private String responseDateTime;
     private String resultUrl;
+    private String correlationId;
 
     public GeneralDTO() {
     }
@@ -27,6 +28,13 @@ public class GeneralDTO implements Serializable {
         this.rsCode = rsCode;
         this.errorMessage = errorMessage;
         this.resultUrl = resultUrl;
+    }
+
+    public GeneralDTO(String rsCode, String errorMessage, String resultUrl, String correlationID) {
+        this.rsCode = rsCode;
+        this.errorMessage = errorMessage;
+        this.resultUrl = resultUrl;
+        this.correlationId = correlationID;
     }
 
     public String getRequestDateTime() {
@@ -77,19 +85,19 @@ public class GeneralDTO implements Serializable {
         this.rsCode = rsCode;
     }
 
-    public String getTransactionCode() {
-        return transactionCode;
-    }
-
-    public void setTransactionCode(String transactionCode) {
-        this.transactionCode = transactionCode;
-    }
-
     public String getResultUrl() {
         return resultUrl;
     }
 
     public void setResultUrl(String resultUrl) {
         this.resultUrl = resultUrl;
+    }
+
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    public void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
     }
 }

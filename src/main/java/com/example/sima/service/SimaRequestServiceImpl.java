@@ -3,6 +3,7 @@ package com.example.sima.service;
 import com.example.sima.DTO.mq.AbstractRequestType;
 import com.example.sima.DTO.mq.PrincipalType;
 import com.example.sima.SimaCodes;
+import com.example.sima.config.log.CorrelationIDHelper;
 import com.example.sima.domain.ConstantCategoryElement;
 import com.example.sima.domain.JMSRequest;
 import com.example.sima.domain.SimaRequest;
@@ -29,11 +30,14 @@ public class SimaRequestServiceImpl implements SimaRequestService {
 
     private final CategoryService categoryService;
 
-    public SimaRequestServiceImpl(SimaRequestRepository simaRequestRepository, SimaFacade simaFacade, JMSRequestService jmsRequestService, CategoryService categoryService) {
+    private final CorrelationIDHelper correlationIDHelper;
+
+    public SimaRequestServiceImpl(SimaRequestRepository simaRequestRepository, SimaFacade simaFacade, JMSRequestService jmsRequestService, CategoryService categoryService, CorrelationIDHelper correlationIDHelper) {
         this.simaRequestRepository = simaRequestRepository;
         this.simaFacade = simaFacade;
         this.jmsRequestService = jmsRequestService;
         this.categoryService = categoryService;
+        this.correlationIDHelper = correlationIDHelper;
     }
 
     @Override
@@ -52,6 +56,11 @@ public class SimaRequestServiceImpl implements SimaRequestService {
         simaRequestRepository.save(simaRequest);
     }
 
+    @Override
+    public SimaRequest loadSimaRequestByMessageId(String correlationId) {
+        return simaRequestRepository.findByMessageId(correlationId);
+    }
+
     //  ============================================================================================================================================================================================
     //  UTILITIES
     //  ============================================================================================================================================================================================
@@ -64,9 +73,7 @@ public class SimaRequestServiceImpl implements SimaRequestService {
     }
 
     private String prepareMessageId() {
-        //todo temperory messageId!
-        String messageId = UUID.randomUUID().toString();
-        return messageId;
+        return correlationIDHelper.getCorrelationID();
     }
 
     public String getMessageBody(AbstractRequestType abstractRequestType, String messageId) throws SimaBusinessException {

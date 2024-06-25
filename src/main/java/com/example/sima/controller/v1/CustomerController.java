@@ -2,6 +2,7 @@ package com.example.sima.controller.v1;
 
 import com.example.sima.DTO.request.SimaCustomerRequestDTO;
 import com.example.sima.api.v1.model.GeneralDTO;
+import com.example.sima.config.log.CorrelationIDHelper;
 import com.example.sima.exception.SimaBusinessException;
 import com.example.sima.exception.SimaResponseCodes;
 import com.example.sima.feature.SimaFeature;
@@ -22,9 +23,11 @@ public class CustomerController {
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     public static final String BASE_URL = "/api/sima/v1/customer";
     private final SimaCustomerService simaCustomerService;
+    private final CorrelationIDHelper correlationIDHelper;
 
-    public CustomerController(SimaCustomerService simaCustomerService) {
+    public CustomerController(SimaCustomerService simaCustomerService, CorrelationIDHelper correlationIDHelper) {
         this.simaCustomerService = simaCustomerService;
+        this.correlationIDHelper = correlationIDHelper;
     }
 
     @GetMapping("/isPartyBlocked/{identifierTypeCode}/{identifier}")
@@ -33,8 +36,7 @@ public class CustomerController {
         SimaCustomerRequestDTO requestDTO = new SimaCustomerRequestDTO();
         requestDTO.setIdentifier(identifier);
         requestDTO.setIdentifierTypeCode(identifierTypeCode);
-        logger.info("IS_SIMA_ACTIVE feature : " + SimaFeature.IS_SIMA_ACTIVE);
         simaCustomerService.sendIsPartyBlockedRequest(requestDTO);
-        return new GeneralDTO(SimaResponseCodes.SIMA_SUCCESS.getCode(), "درخواست شما با موفقیت ارسال شد", BASE_URL + "/getCustomerInfo/" + requestDTO.getIdentifierTypeCode() + "/" + requestDTO.getIdentifier());
+        return new GeneralDTO(SimaResponseCodes.SIMA_SUCCESS.getCode(), "درخواست شما با موفقیت ارسال شد", BASE_URL + "/getCustomerInfo/" + requestDTO.getIdentifierTypeCode() + "/" + requestDTO.getIdentifier(), correlationIDHelper.getCorrelationID());
     }
 }
