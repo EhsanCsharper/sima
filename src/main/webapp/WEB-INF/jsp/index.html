@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="سامانه سیما">
+    <meta name="author" content="DOTIN-CORE-DEPOSIT-TEAM">
+    <meta name="generator" content="DOTIN">
+    <title>سامانه سیما</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard-rtl/">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <style>
+
+        .btn {
+            width: 90px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            height: 31px;
+        }
+
+        .col-form-label {
+            direction: ltr;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link href="/css/dashboard.rtl.css" rel="stylesheet">
+</head>
+<body>
+
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">سامانه سیما</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" href="#">خروج</a>
+        </div>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-3 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <span data-feather="home"></span>
+                            مدیریت مشتریان
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            مدیریت اوراق
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="shopping-cart"></span>
+                            مدیریت قراردادها
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            مدیریت حساب های اوراق
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            سرویس وضعیت اتصال به سامانه سیما
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            دریافت گزارشات بانک مرکزی
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            اجرای ماکروهای سیما به تاریخ گذشته
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-9 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">مدیریت مشتریان</h1>
+            </div>
+
+            <!--add search from-->
+            <form>
+                <div class="row mb-3 form-group">
+                    <label for="inputSelect" class="col-sm-2 col-form-label">نوع شناسه مشتری</label>
+                    <div class="col-sm-4">
+                        <select class="form-select form-select-sm" id="inputSelect">
+                            <option selected>---</option>
+                            <option value="1">کد ملی</option>
+                            <option value="2">کد ملی</option>
+                            <option value="3">کد ملی</option>
+                        </select>
+                    </div>
+                    <label for="customerIdInput" class="col-sm-2 col-form-label">شناسه مشتری</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="customerIdInput">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="customerStatusInputSelect" class="col-sm-2 col-form-label">وضعیت مشتری</label>
+                    <div class="col-sm-4 ">
+                        <select class="form-select form-select-sm" id="customerStatusInputSelect">
+                            <option selected>---</option>
+                            <option value="1">مسدود</option>
+                            <option value="2">فعال</option>
+                        </select>
+                    </div>
+                    <label for="customerNoInput" class="col-sm-2 col-form-label">شماره مشتری</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="customerNoInput">
+                    </div>
+                </div>
+                <div class="container text-center">
+                    <button type="submit" class="btn btn-dark">جستجو</button>
+                </div>
+            </form>
+
+            <div class="border-top" style="margin-top: 20px;"></div>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">عنوان</th>
+                        <th scope="col">عنوان</th>
+                        <th scope="col">عنوان</th>
+                        <th scope="col">عنوان</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    <tr>
+                        <td>1,001</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                        <td>عنوان</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.24.1/feather.min.js"
+        integrity="sha384-EbSscX4STvYAC/DxHse8z5gEDaNiKAIGW+EpfzYTfQrgIlHywXXrM9SUIZ0BlyfF"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+        integrity="sha384-i+dHPTzZw7YVZOx9lbH5l6lP74sLRtMtwN2XjVqjf3uAGAREAF4LMIUDTWEVs4LI"
+        crossorigin="anonymous"></script>
+<script src="../../../resources/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -40,7 +40,7 @@ public class SecurityConfiguration {
         } else {
             return httpSecurity
                     .userDetailsService(userDetailsService())
-                    .authorizeHttpRequests(a -> a.anyRequest().authenticated())
+                    .authorizeHttpRequests(a -> a.anyRequest().permitAll())
                     .httpBasic(Customizer.withDefaults())
                     .build();
         }

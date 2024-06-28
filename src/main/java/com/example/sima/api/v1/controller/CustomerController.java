@@ -1,11 +1,10 @@
-package com.example.sima.controller.v1;
+package com.example.sima.api.v1.controller;
 
 import com.example.sima.DTO.request.SimaCustomerRequestDTO;
 import com.example.sima.api.v1.model.GeneralDTO;
 import com.example.sima.config.log.CorrelationIDHelper;
 import com.example.sima.exception.SimaBusinessException;
 import com.example.sima.exception.SimaResponseCodes;
-import com.example.sima.feature.SimaFeature;
 import com.example.sima.service.SimaCustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Properties;
-
-@RestController
+@RestController("restCustomerController")
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);

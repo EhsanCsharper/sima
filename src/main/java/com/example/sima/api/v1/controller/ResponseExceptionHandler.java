@@ -1,4 +1,4 @@
-package com.example.sima.controller.v1;
+package com.example.sima.api.v1.controller;
 
 import com.example.sima.SharedCodes;
 import com.example.sima.api.v1.model.GeneralDTO;
