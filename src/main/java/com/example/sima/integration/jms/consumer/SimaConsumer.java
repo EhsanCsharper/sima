@@ -22,11 +22,9 @@ public class SimaConsumer {
 
     //@JmsListener(destination = "test")
     public void receiveMessage(String message) {
-        // todo: get correlationID from message and set into slf4j log mdc
         Thread.startVirtualThread(() -> {
-            SecurityUtility.setUserContextForMacro();
-            logger.info(message);
             try {
+                logger.info(message);
                 responseProcessor.process(message);
             } catch (Exception e) {
                 String correlationId = SimaUtility.extractCorrelationId(message);

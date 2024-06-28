@@ -11,4 +11,6 @@ public interface SimaCustomerService {
     SimaCustomer loadSimaCustomer(SimaCustomerRequestDTO requestDTO) throws SimaBusinessException;
 
     IdentifierType getIdentifier(SimaCustomer simaCustomer) throws SimaBusinessException;
+
+    SimaCustomer loadCustomerByRequestId(long requestId);
 }

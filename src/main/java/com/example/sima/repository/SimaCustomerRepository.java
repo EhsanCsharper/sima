@@ -15,4 +15,8 @@ public interface SimaCustomerRepository extends JpaRepository<SimaCustomer, Long
 
     //@Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<SimaCustomer> findById(Long id);
+
+    @Query("select customerLog.simaCustomer from SimaCustomerLog customerLog " +
+            "where customerLog.simaRequest.id = :requestId")
+    SimaCustomer findByRequestId(long requestId);
 }

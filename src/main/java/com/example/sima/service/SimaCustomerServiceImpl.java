@@ -1,14 +1,12 @@
 package com.example.sima.service;
 
-import com.example.sima.DTO.mq.AbstractRequestType;
-import com.example.sima.DTO.mq.IdentifierClassType;
-import com.example.sima.DTO.mq.IdentifierType;
-import com.example.sima.DTO.mq.IsPartyBlockedRequestType;
+import com.example.sima.DTO.mq.*;
 import com.example.sima.DTO.request.SimaCustomerRequestDTO;
 import com.example.sima.SimaCodes;
 import com.example.sima.domain.ConstantCategoryElement;
 import com.example.sima.domain.SimaCustomer;
 import com.example.sima.domain.SimaRequest;
+import com.example.sima.domain.SimaResponse;
 import com.example.sima.domain.log.SimaCustomerLog;
 import com.example.sima.exception.SimaBusinessException;
 import com.example.sima.exception.SimaResponseCodes;
@@ -23,14 +21,14 @@ public class SimaCustomerServiceImpl implements SimaCustomerService{
 
     private final CategoryService categoryService;
     private final SimaRequestService simaRequestService;
-    private final SimaCustomerRepository simaCustomerRepository;
+    private final SimaCustomerRepository customerRepository;
     private final EntityGeneralLogService entityGeneralLogService;
     private final SimaJMSService simaJMSService;
 
     public SimaCustomerServiceImpl(CategoryService categoryService, SimaRequestService simaRequestService, SimaCustomerRepository simaCustomerRepository, EntityGeneralLogService entityGeneralLogService, SimaJMSService simaJMSService) {
         this.categoryService = categoryService;
         this.simaRequestService = simaRequestService;
-        this.simaCustomerRepository = simaCustomerRepository;
+        this.customerRepository = simaCustomerRepository;
         this.entityGeneralLogService = entityGeneralLogService;
         this.simaJMSService = simaJMSService;
     }
@@ -49,7 +47,7 @@ public class SimaCustomerServiceImpl implements SimaCustomerService{
 
     @Override
     public SimaCustomer loadSimaCustomer(SimaCustomerRequestDTO requestDTO) throws SimaBusinessException {
-        Optional<SimaCustomer> simaCustomerOptional = simaCustomerRepository.findByIdentifierAndIdentifierType(requestDTO.getIdentifier(), requestDTO.getIdentifierTypeCode());
+        Optional<SimaCustomer> simaCustomerOptional = customerRepository.findByIdentifierAndIdentifierType(requestDTO.getIdentifier(), requestDTO.getIdentifierTypeCode());
         if (simaCustomerOptional.isEmpty()) {
             throw new SimaBusinessException(SimaResponseCodes.INVALID_SIMA_CUSTOMER_IDENTIFIER);
         }
@@ -74,6 +72,11 @@ public class SimaCustomerServiceImpl implements SimaCustomerService{
         return identifier;
     }
 
+    @Override
+    public SimaCustomer loadCustomerByRequestId(long requestId) {
+        return customerRepository.findByRequestId(requestId);
+    }
+
     //  ============================================================================================================================================================================================
     //  UTILITIES
     //  ============================================================================================================================================================================================
@@ -87,10 +90,10 @@ public class SimaCustomerServiceImpl implements SimaCustomerService{
 
     protected void persistSimaRequestAndLockAndUpdateCustomerLastRequest(SimaCustomer simaCustomer, SimaRequest simaRequest, AbstractRequestType abstractRequestType, ConstantCategoryElement operation) throws SimaBusinessException {
         simaRequestService.persistSimaRequest(simaRequest, abstractRequestType);
-        SimaCustomer loadedCustomer = simaCustomerRepository.findById(simaCustomer.getId()).get();
+        SimaCustomer loadedCustomer = customerRepository.findById(simaCustomer.getId()).get();
         persistSimaCustomerSendRequestLog(loadedCustomer, simaRequest, operation);
         loadedCustomer.setLastSimaRequest(simaRequest);
-        simaCustomerRepository.save(loadedCustomer);
+        customerRepository.save(loadedCustomer);
         simaJMSService.sendMessage(simaRequest.getJmsRequest().getMessageBody());
     }
 

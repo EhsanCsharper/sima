@@ -2,25 +2,18 @@ package com.example.sima.service;
 
 import com.example.sima.DTO.mq.AbstractResponseType;
 import com.example.sima.SimaCodes;
-import com.example.sima.domain.JMSRequest;
+import com.example.sima.config.ApplicationContextProvider;
 import com.example.sima.domain.SimaRequest;
 import com.example.sima.domain.SimaResponse;
 import com.example.sima.exception.SimaBusinessException;
 import com.example.sima.exception.SimaResponseCodes;
+import com.example.sima.service.handler.SimaResponseHandler;
+import com.example.sima.service.handler.customer.IsPartyBlockedResponseHandler;
 import com.example.sima.utilities.SecurityUtility;
 import com.example.sima.utilities.SimaUtility;
-import com.fanap.util.DateUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
 
 @Service
 public class SimaResponseProcessorImpl implements SimaResponseProcessor {
@@ -29,14 +22,14 @@ public class SimaResponseProcessorImpl implements SimaResponseProcessor {
     private final SimaResponseService responseService;
     private final SimaRequestService requestService;
 
-    public SimaResponseProcessorImpl(JMSRequestService jmsRequestService, SimaResponseService responseService, SimaRequestService requestService) {
+    public SimaResponseProcessorImpl(SimaResponseService responseService, SimaRequestService requestService) {
         this.responseService = responseService;
         this.requestService = requestService;
     }
 
     @Override
     public void process(String message) throws Exception {
-        // todo: SimaResponse is already processed?
+        // todo: is already processed?
         validateDuplicateResponse(message);
 
         // correlationId = messageId chera ?
@@ -51,7 +44,9 @@ public class SimaResponseProcessorImpl implements SimaResponseProcessor {
         // todo: create AbstractResponseType DTO
         AbstractResponseType abstractResponseType = SimaUtility.parseResponseStream(message);
 
-        // todo: process message
+        // todo: handel message
+        SimaResponseHandler simaResponseHandler = createResponseHandler(simaResponse.getSimaRequest());
+        simaResponseHandler.handelResponse(simaResponse, abstractResponseType);
 
     }
 
@@ -68,5 +63,25 @@ public class SimaResponseProcessorImpl implements SimaResponseProcessor {
     private void initialUserContextByMessageId(String correlationId) {
         SimaRequest simaRequest = requestService.loadSimaRequestByMessageId(correlationId);
         SecurityUtility.setUserContext(simaRequest.getUserCode(), simaRequest.getBranchCode());
+    }
+
+    private SimaResponseHandler createResponseHandler(SimaRequest simaRequest) {
+        String entityClassName = getEntityClassName(simaRequest);
+        return getEntity(entityClassName);
+    }
+
+    private SimaResponseHandler getEntity(String entityClassName) {
+        return (SimaResponseHandler) ApplicationContextProvider.getApplicationContext().getBean(entityClassName);
+    }
+
+    private String getEntityClassName(SimaRequest simaRequest) {
+        String typeCode = simaRequest.getServiceType().getCode();
+        return switch (typeCode) {
+            case SimaCodes.SIMA_IS_PARTY_BLOCKED_REQUEST_TYPE -> IsPartyBlockedResponseHandler.class.getName();
+            default -> {
+                logger.warn(SimaResponseCodes.INVALID_SIMA_REQUEST_TYPE.getMessage());
+                yield null;
+            }
+        };
     }
 }
