@@ -46,7 +46,7 @@ public class Category extends com.example.sima.domain.Entity{
 
     @OneToMany(fetch=FetchType.LAZY)
     @JoinColumn(name="c_category")
-    @OrderColumn(name = "i_category")
+    //@OrderColumn(name = "i_category")
     public List<CategoryElement> getPossibleValues() {
         return this.possibleValues;
     }

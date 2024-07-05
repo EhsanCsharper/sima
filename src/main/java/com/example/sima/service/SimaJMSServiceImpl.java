@@ -30,7 +30,7 @@ public class SimaJMSServiceImpl implements SimaJMSService {
             });
         } catch (JmsException e) {
             logger.error("unable send message to destination: " + destination, e);
-            throw new SimaBusinessException("unable send message to destination: " + destination + ", error: " + e.getMessage(), e);
+            throw new SimaBusinessException("خطا در ارسال اطلاعات به بانک مرکزی", e);
         }
     }
 }
